@@ -3,35 +3,36 @@ import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
 import UserProfile from './components/UserProfile';
+import ProfilePage from './ProfilePage.jsx';
+import UserInfo from "./UserInfo";
+import UserContext from './UserContext.js';
+import UserDetails from "./UserProfile.jsx";  
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Counter from './components/Counter';
-import ProfilePage from './ProfilePage';
-import UserContext from './UserContext';
-
 
 function App() {
   const [count, setCount] = useState(0)
   const userData = { name: "Jane Doe", email: "jane.doe@example.com" };
 
   return (
-   <>
+    <> 
+  
+  
       <div>
         <WelcomeMessage />,
         <Header />,
         <MainContent />,
         <Footer />
-         <UserContext.Provider value={userData}>
-         <ProfilePage />
+        <UserContext.Provider value={userData}>
+      <ProfilePage />
         </UserContext.Provider>
         <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
+        <ProfilePage userData={userData} />;
       </div>
-         <div>
-      <h1 style={{ textAlign: 'center' }}>Counter Application</h1>
-      <Counter />
-      <div>
+
+      <div className="logos"> 
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
