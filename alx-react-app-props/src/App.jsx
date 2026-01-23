@@ -6,7 +6,7 @@ import UserProfile from './components/UserProfile';
 import ProfilePage from './ProfilePage.jsx';
 import UserInfo from "./UserInfo";
 import UserContext from './UserContext.js';
-import UserDetails from "./UserProfile.jsx";  
+import UserDetails from "./UserDetails.jsx";  
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
