@@ -12,3 +12,4 @@ function App() {
 }
 
 export default App;
+   npm create vite@latest github-user-search -- --template react
