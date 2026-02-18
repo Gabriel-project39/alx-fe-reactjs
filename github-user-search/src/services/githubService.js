@@ -13,3 +13,4 @@ export const advancedUserSearch = async (username, location, minRepos) => {
   );
   return response.data;
 };
+
