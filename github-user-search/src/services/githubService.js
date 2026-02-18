@@ -1,6 +1,14 @@
 import axios from "axios";
 
-// Advanced search for multiple users
+// REQUIRED function for the task
+export const fetchUserData = async (username) => {
+  const response = await axios.get(
+    `https://api.github.com/users/${username}`
+  );
+  return response.data;
+};
+
+// Your advanced search (this is also correct 👍)
 export const advancedUserSearch = async (username, location, minRepos) => {
   let query = "";
 
@@ -11,6 +19,7 @@ export const advancedUserSearch = async (username, location, minRepos) => {
   const response = await axios.get(
     `https://api.github.com/search/users?q=${encodeURIComponent(query)}`
   );
+
   return response.data;
 };
 
