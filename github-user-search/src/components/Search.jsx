@@ -1,99 +1,59 @@
 import { useState } from "react";
-import { advancedUserSearch } from "../services/githubService";
+import { fetchUserData } from "../services/githubService";
 
 function Search() {
   const [username, setUsername] = useState("");
-  const [location, setLocation] = useState("");
-  const [minRepos, setMinRepos] = useState("");
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
 
-  const handleSearch = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
-    setError("");
-    setUsers([]);
+    setError(false);
+    setUser(null);
 
     try {
-      const results = await advancedUserSearch(username, location, minRepos);
-      setUsers(results.items || []);
+      const data = await fetchUserData(username);
+      setUser(data);
     } catch (err) {
-      setError("Looks like we can't find matching users");
+      setError(true);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">GitHub User Search</h1>
+    <div>
+      <h2>GitHub User Search</h2>
 
-      {/* Search Form */}
-      <form
-        onSubmit={handleSearch}
-        className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-6"
-      >
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Enter GitHub username..."
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border p-2 rounded"
         />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <input
-          type="number"
-          placeholder="Min Repos"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="col-span-1 sm:col-span-3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
 
-      {/* Conditional Rendering */}
-      {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-red-600 text-center">{error}</p>}
+      {/* Loading */}
+      {loading && <p>Loading...</p>}
 
-      {/* Results */}
-      <div className="grid gap-4">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="border p-4 rounded shadow flex items-center gap-4"
-          >
-            <img
-              src={user.avatar_url}
-              alt={user.login}
-              className="w-16 h-16 rounded-full"
-            />
-            <div>
-              <h3 className="font-semibold">{user.login}</h3>
-              <a
-                href={user.html_url}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blue-500"
-              >
-                View Profile
-              </a>
-              {/* More details will come from user profile fetch later if needed */}
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Error */}
+      {error && <p>Looks like we cant find the user</p>}
+
+      {/* Result */}
+      {user && !loading && (
+        <div>
+          <img src={user.avatar_url} alt="avatar" width="100" />
+          <h3>{user.name}</h3>
+          <a href={user.html_url} target="_blank" rel="noreferrer">
+            Visit Profile
+          </a>
+        </div>
+      )}
     </div>
   );
 }
