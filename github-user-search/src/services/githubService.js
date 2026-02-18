@@ -2,24 +2,33 @@ import axios from "axios";
 
 // REQUIRED function for the task
 export const fetchUserData = async (username) => {
-  const response = await axios.get(
-    `https://api.github.com/users/${username}`
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      `https://api.github.com/users/${username}`
+    );
+    return response.data;
+  } catch (error) {
+    // throw error so the component can handle it
+    throw error;
+  }
 };
 
-// Your advanced search (this is also correct 👍)
+// Advanced search for multiple users
 export const advancedUserSearch = async (username, location, minRepos) => {
-  let query = "";
+  try {
+    let query = "";
 
-  if (username) query += `${username} in:login `;
-  if (location) query += `location:${location} `;
-  if (minRepos) query += `repos:>=${minRepos}`;
+    if (username) query += `${username} in:login `;
+    if (location) query += `location:${location} `;
+    if (minRepos) query += `repos:>=${minRepos}`;
 
-  const response = await axios.get(
-    `https://api.github.com/search/users?q=${encodeURIComponent(query)}`
-  );
+    const response = await axios.get(
+      `https://api.github.com/search/users?q=${encodeURIComponent(query)}`
+    );
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
